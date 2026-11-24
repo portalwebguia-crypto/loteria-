@@ -88,7 +88,6 @@
   .combo-special .combo-mosaic{grid-template-columns:1fr}
   .combo-special .combo-tile b{font-size:min(7.3cqw,34px)}
   .combo-special .combo-tile>span:last-child{font-size:min(5.2cqw,24px);margin-top:24px}
-  .combo-special .combo-watermark{top:50%;right:10px;bottom:auto;grid-template-columns:repeat(2,78px);grid-template-rows:repeat(2,78px);gap:2px;opacity:.14;transform:translateY(-50%)}
   .combo-content{min-height:254px;padding:16px 26px 20px}
   .combo-content h3{font-size:26px;margin-bottom:8px}
   .combo-content p{font-size:14px;line-height:1.45;min-height:60px;margin-bottom:12px}
