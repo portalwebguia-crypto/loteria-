@@ -96,7 +96,7 @@
   .combo-prev{left:-12px}.combo-next{right:-12px}
 }
 .home-refresh .combo-watermark{display:none}
-.home-refresh .combo-special .combo-watermark{display:grid;top:12px;right:0;bottom:auto;grid-template-columns:repeat(2,72px);grid-template-rows:repeat(2,118px);gap:2px;opacity:.18;transform:none}
+.home-refresh .combo-special .combo-watermark{display:grid;top:10px;right:0;bottom:auto;grid-template-columns:repeat(2,72px);grid-template-rows:repeat(2,118px);gap:2px;opacity:.18;transform:none}
 .home-refresh .combo-special .combo-watermark i{transform:none}
 .home-refresh .combo-special .combo-watermark i:nth-child(1){border-radius:50% 50% 5% 50%}
 .home-refresh .combo-special .combo-watermark i:nth-child(2){border-radius:50% 50% 50% 5%}
