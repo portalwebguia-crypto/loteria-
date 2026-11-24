@@ -95,6 +95,7 @@
   .combo-buy{width:213px;min-height:56px;font-size:20px}
   .combo-prev{left:-12px}.combo-next{right:-12px}
 }
+.home-refresh .combo-special .combo-watermark{top:12px;right:0;bottom:auto;grid-template-columns:repeat(2,72px);grid-template-rows:repeat(2,118px);gap:2px;opacity:.18;transform:none}
 /* Three-card reference at 100% browser zoom. */
 @media(min-width:1101px){
   .home-refresh .combos-section{width:88.5%;max-width:1670px;padding:30px 0 40px}
