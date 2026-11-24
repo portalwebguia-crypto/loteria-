@@ -81,3 +81,22 @@
 .site-banner-inner .site-brand img{display:block;width:100px;height:60px;object-fit:contain}
 .site-banner-inner .site-version{color:#79a6c8;font:400 16px PoolBook,Arial,sans-serif}
 @media(max-width:720px){.site-banner-inner{width:calc(100% - 24px);height:60px;min-height:60px;padding:0;align-items:center;flex-direction:row}.site-banner-inner .caixa-site-link{font-size:13px}.site-banner-inner .site-brand{top:0;left:50%;right:auto;width:76px;height:60px;transform:translateX(-50%)}.site-banner-inner .site-brand img{width:100px;height:60px;max-width:none;position:relative;left:50%;transform:translateX(-50%)}.site-banner-inner .site-version{font-size:10px}}
+
+/* Compact modality carousel for phones. */
+@media(max-width:720px){
+  .pool-modalities{background:#f3f3f3}
+  .pool-modalities-inner{width:calc(100% - 8px);padding:12px 0 24px}
+  .pool-modalities h2{margin:14px 20px 8px;font-size:18px;line-height:1.25}
+  .modality-carousel{gap:0;padding:0 4px}
+  .modality-arrow{width:26px;height:44px;padding:0;font-size:34px;line-height:1}
+  .modality-scroll{gap:28px;padding:18px 4px 12px}
+  .modality-chip{flex:0 0 132px;width:132px;height:97px;min-height:97px;padding:14px 4px 24px;border:1px solid #d2d2d2;border-radius:10px;font-size:13px;line-height:1.2}
+  .modality-chip .modality-clover{top:-18px;width:36px;height:36px;padding:3px;gap:1px}
+  .modality-chip .modality-count{height:22px;padding:2px;font-size:10px;line-height:1.1}
+  .modality-chip[data-pool-game=""].is-active{background:#faf7fb;color:#4f5c72;border-color:#d2d2d2}
+  .modality-chip[data-pool-game=""].is-active .modality-count{display:none}
+  .modality-chip[data-pool-game="virada"].is-active{background:#00a451;color:#fff;border-color:#00a451}
+  .modality-chip[data-pool-game="virada"].is-active .modality-count{background:#008f46;color:#fff}
+  .modality-chip[data-pool-game="virada"] .modality-clover{border-color:#00a451;background:#00a451}
+  .modality-chip[data-pool-game="virada"] .modality-clover svg{fill:#fff}
+}
