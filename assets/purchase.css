@@ -71,3 +71,13 @@
 .pool-cart-preview:after{position:fixed;top:calc(var(--panel-top, 134px) - 8px);right:var(--cart-arrow-right,230px);border-top:1px solid #aaa;border-left:1px solid #aaa}.pool-cart-preview .pool-preview-header{border-top:1px solid #d1d1d1}.pool-cart-preview .pool-preview-row button{display:grid;place-items:center;font-size:0}.pool-cart-preview .pool-preview-row button:after{display:none}.pool-cart-preview .pool-preview-row button svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 
 .pool-cart-preview{left:auto!important}@media(max-width:620px){.pool-cart-preview{left:10px!important;right:10px!important}}
+
+/* CAIXA-style top strip on the bolões page. */
+.site-banner{width:100%;background:#0563a8}
+.site-banner-inner{position:relative;width:88%;max-width:1670px;height:60px;min-height:60px;margin:0 auto;padding:0;display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:16px;font-size:20px}
+.site-banner-inner .caixa-site-link{position:relative;z-index:1;color:#fff;font:400 20px PoolBook,Arial,sans-serif;text-decoration:none}
+.site-banner-inner .caixa-site-link:hover{text-decoration:underline}
+.site-banner-inner .site-brand{position:absolute;top:0;left:50%;right:auto;width:100px;height:60px;transform:translateX(-50%)}
+.site-banner-inner .site-brand img{display:block;width:100px;height:60px;object-fit:contain}
+.site-banner-inner .site-version{color:#79a6c8;font:400 16px PoolBook,Arial,sans-serif}
+@media(max-width:720px){.site-banner-inner{width:calc(100% - 24px);height:60px;min-height:60px;padding:0;align-items:center;flex-direction:row}.site-banner-inner .caixa-site-link{font-size:13px}.site-banner-inner .site-brand{top:0;left:50%;right:auto;width:76px;height:60px;transform:translateX(-50%)}.site-banner-inner .site-brand img{width:100px;height:60px;max-width:none;position:relative;left:50%;transform:translateX(-50%)}.site-banner-inner .site-version{font-size:10px}}

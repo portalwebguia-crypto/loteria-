@@ -227,7 +227,7 @@
       controls.append(button,notice); body.append(detailButton, shares, price, controls); card.append(body, detailDialog); featured.append(card);
     }
     list.textContent = poolsLoading ? 'Carregando bolões...' : loadError ? 'Não foi possível carregar os bolões.' : `${visible.length} ${visible.length === 1 ? 'bolão cadastrado' : 'bolões cadastrados'}.`;
-    back.href = '../home.html#' + (routes[select.value] || 'modalidades');
+    if (back) back.href = '../home.html#' + (routes[select.value] || 'modalidades');
     document.title = 'Bolões de ' + name + ' | Portal da Sorte';
   }
   toggle.addEventListener('click', () => {
