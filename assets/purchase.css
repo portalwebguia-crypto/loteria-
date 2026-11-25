@@ -91,7 +91,7 @@
   .modality-carousel{gap:0;padding:0 4px}
   .modality-arrow{width:20px;height:44px;padding:0;font-size:34px;line-height:1}
   .modality-scroll{flex:1 1 0;width:auto;max-width:none;gap:12px;padding:18px 2px 12px;overflow-x:auto}
-  .modality-chip{flex:0 0 calc((100% - 12px)/2);width:auto;height:104px;min-height:104px;padding:14px 5px 25px;border:1px solid #d2d2d2;border-radius:10px;font-size:14px;line-height:1.2}
+  .modality-chip{flex:0 0 calc((100% - 12px)/2);width:auto;height:116px;min-height:116px;padding:14px 5px 25px;border:1px solid #d2d2d2;border-radius:10px;font-size:14px;line-height:1.2}
   .modality-chip .modality-clover{top:-18px;width:36px;height:36px;padding:3px;gap:1px}
   .modality-chip .modality-count{height:23px;padding:2px;font-size:11px;line-height:1.1}
   .modality-chip[data-pool-game=""].is-active{background:#faf7fb;color:#4f5c72;border-color:#d2d2d2}
