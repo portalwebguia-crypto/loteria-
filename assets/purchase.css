@@ -84,6 +84,7 @@
 
 /* Compact modality carousel for phones. */
 @media(max-width:720px){
+  .pool-account{width:max-content;margin:20px auto 0;justify-content:center}
   .pool-modalities{background:#f3f3f3}
   .pool-modalities-inner{width:calc(100% - 8px);padding:12px 0 24px}
   .pool-modalities h2{margin:14px 20px 8px;font-size:18px;line-height:1.25}
