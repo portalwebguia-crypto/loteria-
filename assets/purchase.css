@@ -101,3 +101,5 @@
   .modality-chip[data-pool-game="virada"] .modality-clover{border-color:#00a451;background:#00a451}
   .modality-chip[data-pool-game="virada"] .modality-clover svg{fill:#fff}
 }
+
+.pool-stock-warning{margin:8px 0;padding:9px 12px;border:1px solid #f0c36d;border-radius:6px;background:#fff8e8;color:#8b5a00;font-size:13px;font-weight:700;text-align:center}.pool-stock-warning[hidden]{display:none!important}

@@ -416,6 +416,7 @@
         const row = node('div', undefined, 'settings-body');
         const bets = pool.bets || [pool.numbers], poolName = pool.game === 'loteca' ? 'Loteca Especial' : pool.game;
         row.append(node('strong', `${poolName} · ${pool.date} · ${pool.description || pool.numbers.join(', ')}`), node('p', `${pool.unlimited ? 'Sem limite cadastrado' : `${pool.available} de ${pool.total} cotas`} · ${new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(pool.price/100)}`));
+        if (!pool.unlimited && pool.available === 1) row.append(node('p', 'Atenção: resta apenas 1 cota disponível!', 'pool-stock-warning'));
         bets.forEach((bet, index) => row.append(node('p', `Aposta ${index + 1}: ${pool.game === 'loteca' ? bet.map((pick, gameIndex) => `${gameIndex + 1}: ${pick}`).join(' · ') : bet.map(n => String(n).padStart(2,'0')).join(', ')}`)));
         const remove = node('button', 'Excluir bolão', 'button secondary'); remove.type = 'button';
         const edit = node('button', 'Editar bolão', 'button secondary'); edit.type = 'button';

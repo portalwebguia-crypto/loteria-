@@ -190,6 +190,9 @@
         comparison.textContent = `Esta combinação equivale a ${new Intl.NumberFormat('pt-BR').format(Math.round(combinations))} ${combinations === 1 ? 'aposta simples' : 'apostas simples'} para acertar as 6 dezenas.`;
       }
       const shares = document.createElement('p'); shares.className = 'pool-shares'; shares.textContent = pool.unlimited ? 'Sem limite de cotas cadastrado' : `${pool.available} cotas disponíveis de ${pool.total}`;
+      const stockWarning = document.createElement('p'); stockWarning.className = 'pool-stock-warning';
+      stockWarning.textContent = 'Atenção: resta apenas 1 cota disponível!';
+      stockWarning.hidden = pool.unlimited || pool.available !== 1;
       const price = document.createElement('p'); price.className = 'pool-price'; price.textContent = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(pool.price / 100);
       const controls = document.createElement('div'); controls.className = 'pool-purchase';
       const row = document.createElement('div'); row.className = 'pool-quantity';
@@ -242,7 +245,7 @@
       detailButton.addEventListener('click', () => detailDialog.showModal());
       body.append(prizeValue, prizeCaption);
       if (description.textContent) body.append(description);
-      controls.append(button,notice); body.append(detailButton, shares, price, controls); card.append(body, detailDialog); featured.append(card);
+      controls.append(button,notice); body.append(detailButton, shares, stockWarning, price, controls); card.append(body, detailDialog); featured.append(card);
     }
     list.textContent = poolsLoading ? 'Carregando bolões...' : loadError ? 'Não foi possível carregar os bolões.' : `${visible.length} ${visible.length === 1 ? 'bolão cadastrado' : 'bolões cadastrados'}.`;
     if (back) back.href = '../home.html#' + (routes[select.value] || 'modalidades');
