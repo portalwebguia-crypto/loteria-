@@ -84,7 +84,7 @@
       const draw = window.homeProductReference?.draws[game.id] || exampleDraws[game.id];
       const gameRoute = game.route || game.id;
       const color = draw?.color || game.color;
-      const prizeAmount = game.id === 'virada' ? `<span>R$</span>${draw.amount}` : `R$ ${draw.amount}`;
+      const prizeAmount = `R$ ${draw.amount}`;
       const countdown = draw.close ? `<span data-product-close="${draw.close}">${window.homeProductReference.countdown(draw.close)}</span>` : '<span>Consulte o prazo oficial de apostas</span>';
       const prizeSummary = draw.amount
         ? `<div class="product-prize"><strong>${prizeAmount}</strong><b>(R$${draw.short})</b></div><p class="product-contest">${draw.close || game.id === 'quina' ? 'Prêmio estimado' : 'Exemplo de prêmio'} do concurso ${draw.contest}</p>`
