@@ -248,8 +248,12 @@
     const heading = node('div', undefined, 'section-heading'), title = node('div');
     title.append(node('h2', fullHistory ? 'Tudo o que foi gerado na loja' : 'Resumo do seu site'),
       node('p', 'Apostas e PIX de todos os visitantes, salvos no servidor. Atualização automática a cada 5 segundos.'));
+    const actions = node('div', undefined, 'toolbar');
     const refresh = node('button', 'Atualizar painel', 'button secondary'); refresh.type = 'button';
-    heading.append(title, refresh); host.append(heading);
+    const clear = node('button', 'Limpar histórico', 'button secondary small'); clear.type = 'button';
+    clear.title = 'Apaga visitas, apostas geradas e totais do painel. Bolões e pedidos ficam preservados.';
+    actions.append(refresh, clear);
+    heading.append(title, actions); host.append(heading);
     const metrics = node('div', undefined, 'metrics');
     const money = amount => new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(amount / 100);
     const values = [];
@@ -269,9 +273,9 @@
     const previous = node('button', 'Anterior', 'button secondary'), next = node('button', 'Próxima', 'button secondary');
     previous.type = next.type = 'button'; pagination.append(previous, next); pagination.hidden = !fullHistory;
     card.append(cardHeading, message, scroll, pagination); host.append(card);
-    let loading = false, offset = 0, rendered = '';
+    let loading = false, clearing = false, offset = 0, rendered = '';
     async function update() {
-      if (loading || document.hidden || current !== generation || !host.isConnected) return;
+      if (loading || clearing || document.hidden || current !== generation || !host.isConnected) return;
       loading = true; refresh.disabled = true;
       try {
         const result = await request('generations', undefined, {offset});
@@ -308,6 +312,21 @@
       } finally { loading = false; refresh.disabled = false; }
     }
     refresh.addEventListener('click', update);
+    clear.addEventListener('click', async () => {
+      if (loading || clearing || !window.confirm('Limpar visitas, apostas geradas, PIX gerados e os totais deste painel? Os bolões cadastrados e os pedidos serão preservados. Essa ação não pode ser desfeita.')) return;
+      clearing = true; clear.disabled = true; refresh.disabled = true;
+      try {
+        await request('clear-visitors', {confirm:true});
+        offset = 0; rendered = '';
+        scroll.replaceChildren();
+        message.textContent = 'Histórico limpo. Os próximos registros aparecerão aqui.';
+      } catch (error) {
+        message.textContent = error.message;
+      } finally {
+        clearing = false; clear.disabled = false; refresh.disabled = false;
+      }
+      await update();
+    });
     previous.addEventListener('click', () => { if (!loading) { offset = Math.max(0,offset-50); update(); } });
     next.addEventListener('click', () => { if (!loading) { offset += 50; update(); } });
     update(); refreshTimer = setInterval(update, 5000);
