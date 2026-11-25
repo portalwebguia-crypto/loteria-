@@ -102,6 +102,15 @@
   },close:returnToGame};
   document.querySelector('[data-cart-payment]').addEventListener('click',()=>document.getElementById('finish-demo').click());
   document.querySelector('[data-cart-clear]').addEventListener('click',()=>document.getElementById('cart-clear').click());
+  document.querySelector('[data-save-cart-favorite]')?.addEventListener('click',()=>{
+    try{
+      const favorites=JSON.parse(localStorage.getItem('portal-demo-cart-favorites-v1')||'[]');
+      const pools=JSON.parse(localStorage.getItem(demoKey)||'[]');
+      favorites.push({savedAt:new Date().toISOString(),games:window.portalDemo?.getGames()||[],pools});
+      localStorage.setItem('portal-demo-cart-favorites-v1',JSON.stringify(favorites));
+      const toast=document.getElementById('toast');toast.textContent='Carrinho salvo como favorito neste dispositivo.';toast.hidden=false;setTimeout(()=>{toast.hidden=true;},3500);
+    }catch(_){const toast=document.getElementById('toast');toast.textContent='Falha ao salvar o favorito neste dispositivo.';toast.hidden=false;setTimeout(()=>{toast.hidden=true;},3500);}
+  });
   dialog.addEventListener('close',()=>{
     if(silentCloses){silentCloses--;return;}
     returnToGame();
