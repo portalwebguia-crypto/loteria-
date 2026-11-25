@@ -19,7 +19,7 @@ module.exports = endpoint(async (req, res) => {
     } catch (_) { /* uma fonte indisponível não deve impedir as demais */ }
   }));
   if (today <= '2026-12-31') prizes.virada = {amount:1000000000, contest:3100, date:'2027-01-01'};
-  if (today <= '2026-11-28') prizes.loteca = {amount:1000000, contest:1285, date:'2026-11-30'};
+  if (today <= '2026-11-28') prizes.loteca = {amount:1000000, contest:1285, date:'2026-11-28'};
   cached = prizes; expires = Date.now() + 60000;
   return json(res, {prizes});
 });

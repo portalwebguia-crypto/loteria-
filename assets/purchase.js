@@ -20,12 +20,18 @@
   let poolsLoading = true;
   let prizes = {};
   const referencePrizes = {
-    virada:{amount:1000000000,label:'R$ 1 Bilh\u00e3o'}, quina:{amount:50000000,label:'R$ 50 Milh\u00f5es'},
-    loteca:{amount:1000000,label:'R$ 1 Milh\u00e3o'}, mega:{amount:75000000,label:'R$ 75 Milh\u00f5es'},
-    facil:{amount:2000000,label:'R$ 2 Milh\u00f5es'}, milionaria:{amount:118000000,label:'R$ 118 Milh\u00f5es'},
-    timemania:{amount:30500000,label:'R$ 30,5 Milh\u00f5es'}, dupla:{amount:15300000,label:'R$ 15,3 Milh\u00f5es'},
-    dia:{amount:100000,label:'R$ 100 Mil'}, super:{amount:650000,label:'R$ 650 Mil'}
+    virada:{amount:1000000000,label:'R$ 1 Bilh\u00e3o',contest:3100,date:'2027-01-01'},
+    mega:{amount:75000000,label:'R$ 75 Milh\u00f5es',contest:3091,date:'2026-11-26'},
+    facil:{amount:2000000,label:'R$ 2 Milh\u00f5es',contest:3838,date:'2026-11-25'},
+    quina:{amount:50000000,label:'R$ 50 Milh\u00f5es',contest:7173,date:'2026-11-29'},
+    loteca:{amount:1000000,label:'R$ 1 Milh\u00e3o',contest:1285,date:'2026-11-28'},
+    milionaria:{amount:118000000,label:'R$ 118 Milh\u00f5es',contest:410,date:'2026-11-25'},
+    timemania:{amount:30500000,label:'R$ 30,5 Milh\u00f5es',contest:2473,date:'2026-11-26'},
+    dupla:{amount:15300000,label:'R$ 15,3 Milh\u00f5es',contest:3036,date:'2026-11-25'},
+    dia:{amount:100000,label:'R$ 100 Mil',contest:1356,date:'2026-11-25'},
+    super:{amount:700000,label:'R$ 700 Mil',contest:926,date:'2026-11-25'}
   };
+  const drawTimes = {virada:'11h00',mega:'21h00',facil:'21h00',quina:'11h00',loteca:'16h00',milionaria:'21h00',timemania:'21h00',dupla:'21h00',dia:'21h00',super:'21h00'};
   let loadError = false;
   try {
     const cart = JSON.parse(localStorage.getItem('portal-demo-games-v1') || '[]');
@@ -109,20 +115,19 @@
     const megaPrices = pools.filter(pool => pool.game === select.value && (pool.unlimited || pool.available > 0) && Number.isInteger(pool.price) && pool.price > 0).map(pool => pool.price);
     document.getElementById('mega-pool-price').textContent = megaPrices.length ? 'Cotas a partir de ' + new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Math.min(...megaPrices)/100) : 'Consulte os bolões cadastrados';
     document.getElementById('mega-name').textContent = ({mega:'Mega-Sena',facil:'Lotofácil',milionaria:'+Milionária',timemania:'Timemania',dupla:'Dupla Sena',dia:'Dia de Sorte',super:'Super Sete'})[select.value] || 'Mega-Sena';
-    const megaPrize = prizes[select.value];
+    const megaPrize = prizes[select.value] || referencePrizes[select.value];
     document.getElementById('mega-prize').textContent = megaPrize ? (megaPrize.amount >= 1000000 ? `R$ ${new Intl.NumberFormat('pt-BR',{maximumFractionDigits:2}).format(megaPrize.amount / 1000000)} ${megaPrize.amount === 1000000 ? 'Milhão' : 'Milhões'}` : megaPrize.amount >= 1000 ? `R$ ${new Intl.NumberFormat('pt-BR',{maximumFractionDigits:2}).format(megaPrize.amount / 1000)} Mil` : new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}).format(megaPrize.amount)) : 'Prêmio indisponível';
     document.getElementById('mega-contest').textContent = megaPrize ? `Prêmio estimado do concurso ${megaPrize.contest}` : 'Estimativa indisponível no momento';
     if (select.value === 'super' && !megaPrize) {
-      document.getElementById('mega-prize').textContent = 'R$ 650 Mil';
+      document.getElementById('mega-prize').textContent = 'R$ 700 Mil';
       document.getElementById('mega-contest').textContent = 'Valor de referência — consulte a estimativa atual';
     }
-    document.getElementById('mega-date').textContent = megaPrize?.date ? megaPrize.date.split('-').reverse().join('/') + (select.value === 'mega' && megaPrize.contest === 3090 ? ' às 21h00' : ' — consulte o horário oficial') : 'Data indisponível';
+    const drawDate = megaPrize?.date;
+    const formattedDate = drawDate ? drawDate.split('-').reverse().join('/') : '';
+    const drawDay = drawDate ? new Intl.DateTimeFormat('pt-BR', {weekday:'long', timeZone:'UTC'}).format(new Date(`${drawDate}T12:00:00Z`)) : '';
+    document.getElementById('mega-date').textContent = drawDate ? `${formattedDate} \u00e0s ${drawTimes[select.value] || 'consulte o hor\u00e1rio oficial'}` : 'Data indispon\u00edvel';
     const drawLabel = document.getElementById('mega-draw-label');
-    drawLabel.textContent = 'Sorteio';
-    if (['dupla','dia','super'].includes(select.value) && megaPrize?.date) {
-      const day = new Intl.DateTimeFormat('pt-BR', {weekday:'long', timeZone:'UTC'}).format(new Date(`${megaPrize.date}T12:00:00Z`));
-      drawLabel.textContent = `Sorteio ${day.charAt(0).toUpperCase() + day.slice(1)}`;
-    }
+    drawLabel.textContent = drawDate ? `${select.value === 'loteca' ? 'Apura\u00e7\u00e3o' : 'Sorteio'} ${drawDay.charAt(0).toUpperCase() + drawDay.slice(1)}` : 'Sorteio';
     const fridayPrices = pools.filter(pool => pool.game === 'quina' && (pool.unlimited || pool.available > 0) && Number.isInteger(pool.price) && pool.price > 0).map(pool => pool.price);
     document.getElementById('friday-price').textContent = fridayPrices.length ? 'Valor cadastrado a partir de ' + new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Math.min(...fridayPrices)/100) : 'Consulte os bolões cadastrados';
     const lotecaPrices = pools.filter(pool => pool.game === 'loteca' && (pool.unlimited || pool.available > 0) && Number.isInteger(pool.price) && pool.price > 0).map(pool => pool.price);
@@ -145,7 +150,7 @@
           const amount = prize.amount;
           footer.textContent = amount >= 1000000000 ? `R$ ${new Intl.NumberFormat('pt-BR',{maximumFractionDigits:2}).format(amount/1000000000)} Bilhão` : amount >= 1000000 ? `R$ ${new Intl.NumberFormat('pt-BR',{maximumFractionDigits:2}).format(amount/1000000)} ${amount === 1000000 ? 'Milhão' : 'Milhões'}` : button.dataset.poolGame === 'super' && amount >= 1000 ? `R$ ${new Intl.NumberFormat('pt-BR',{maximumFractionDigits:2}).format(amount/1000)} Mil` : `R$ ${new Intl.NumberFormat('pt-BR',{maximumFractionDigits:0}).format(amount)}`;
           footer.title = `Prêmio estimado do concurso ${prize.contest}; sujeito a alterações.`;
-        } else if (button.dataset.poolGame === 'super') { footer.textContent = 'R$ 650 Mil'; footer.title = 'Valor de referência informado; consulte a estimativa atual.'; }
+        } else if (button.dataset.poolGame === 'super') { footer.textContent = 'R$ 700 Mil'; footer.title = 'Valor de referência informado; consulte a estimativa atual.'; }
         else { footer.textContent = 'Consulte o prêmio'; footer.title = 'Estimativa indisponível no momento.'; }
       }
     });
@@ -164,10 +169,11 @@
       const icon = document.createElement('span'); icon.className = 'pool-card-icon'; icon.setAttribute('aria-hidden', 'true'); icon.innerHTML = '<svg viewBox="0 0 467 460" aria-hidden="true"><path d="M215 233H87C1 233 1 104 87 104 87 18 215 18 215 104Z"/><path opacity=".55" d="M233 233h128c86 0 86-129 0-129 0-86-128-86-128 0Z"/><path opacity=".55" d="M215 250H87C1 250 1 379 87 379c0 86 128 86 128 0Z"/><path d="M233 250h128c86 0 86 129 0 129 0 86-128 86-128 0Z"/></svg>';
       header.append(icon, title); card.append(header);
       const body = document.createElement('div'); body.className = 'pool-content';
-      const prize = prizes[pool.game];
+      const prize = prizes[pool.game] || referencePrizes[pool.game];
       const prizeValue = document.createElement('p'); prizeValue.className = 'pool-prize'; prizeValue.textContent = prize?.amount ? new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(prize.amount) : 'Prêmio em consulta';
       const prizeCaption = document.createElement('p'); prizeCaption.className = 'pool-prize-caption'; prizeCaption.textContent = prize?.contest ? 'Prêmio estimado do concurso ' + prize.contest : 'Estimativa indisponível no momento';
-      const date = document.createElement('p'); date.textContent = pool.date ? 'Sorteio: ' + pool.date.split('-').reverse().join('/') : 'Data do sorteio a confirmar.';
+      const date = document.createElement('p');
+      if (pool.date) { const poolDay = new Intl.DateTimeFormat('pt-BR',{weekday:'long',timeZone:'UTC'}).format(new Date(`${pool.date}T12:00:00Z`)); const label = pool.game === 'loteca' ? 'Apura\u00e7\u00e3o' : 'Sorteio'; date.textContent = `${label} ${poolDay.charAt(0).toUpperCase() + poolDay.slice(1)}: ${pool.date.split('-').reverse().join('/')} \u00e0s ${drawTimes[pool.game] || 'consulte o hor\u00e1rio oficial'}`; } else date.textContent = 'Data do sorteio a confirmar.';
       const bets = pool.bets || [pool.numbers];
       const betDetails = document.createDocumentFragment();
       bets.forEach((bet, index) => {
