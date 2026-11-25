@@ -31,7 +31,7 @@
       const contestCell=document.createElement('td');contestCell.textContent=item.contest||contests[item.game]||'A confirmar';
       const priceCell=document.createElement('td');priceCell.textContent=money(item.price);
       const timerCell=document.createElement('td');timerCell.className='pool-reservation-time';timerCell.dataset.until=String(item.reservedUntil);
-      const removeCell=document.createElement('td'),remove=document.createElement('button');remove.type='button';remove.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 9v9M14 9v9"/></svg>';remove.setAttribute('aria-label','Excluir bolão');remove.className='pool-demo-remove';remove.addEventListener('click',()=>{items.splice(index,1);localStorage.setItem(demoKey,JSON.stringify(items));renderPoolDemo();});removeCell.append(remove);
+      const removeCell=document.createElement('td'),remove=document.createElement('button');remove.type='button';remove.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6V4h8v2M4.5 6h15M7 6l1 14h8l1-14M10 10v7M14 10v7"/></svg>';remove.setAttribute('aria-label','Excluir bolão');remove.className='pool-demo-remove';remove.addEventListener('click',()=>{items.splice(index,1);localStorage.setItem(demoKey,JSON.stringify(items));renderPoolDemo();});removeCell.append(remove);
       row.append(nameCell,detailsCell,contestCell,priceCell,timerCell,removeCell);body.append(row);
     });
     table.append(body);list.append(table);localStorage.setItem(demoKey,JSON.stringify(items));
