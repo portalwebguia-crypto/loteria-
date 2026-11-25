@@ -19,6 +19,13 @@
   let pools = [];
   let poolsLoading = true;
   let prizes = {};
+  const referencePrizes = {
+    virada:{amount:1000000000,label:'R$ 1 Bilh\u00e3o'}, quina:{amount:50000000,label:'R$ 50 Milh\u00f5es'},
+    loteca:{amount:1000000,label:'R$ 1 Milh\u00e3o'}, mega:{amount:75000000,label:'R$ 75 Milh\u00f5es'},
+    facil:{amount:2000000,label:'R$ 2 Milh\u00f5es'}, milionaria:{amount:118000000,label:'R$ 118 Milh\u00f5es'},
+    timemania:{amount:30500000,label:'R$ 30,5 Milh\u00f5es'}, dupla:{amount:15300000,label:'R$ 15,3 Milh\u00f5es'},
+    dia:{amount:100000,label:'R$ 100 Mil'}, super:{amount:650000,label:'R$ 650 Mil'}
+  };
   let loadError = false;
   try {
     const cart = JSON.parse(localStorage.getItem('portal-demo-games-v1') || '[]');
@@ -128,8 +135,13 @@
       button.setAttribute('aria-pressed', String(selected));
       const footer = button.querySelector('.modality-count');
       if (footer) {
-        const prize = prizes[button.dataset.poolGame];
-        if (prize?.amount) {
+        footer.hidden = !button.dataset.poolGame;
+        if (footer.hidden) return;
+        const prize = prizes[button.dataset.poolGame] || referencePrizes[button.dataset.poolGame];
+        if (prize?.label) {
+          footer.textContent = prize.label;
+          footer.title = 'Valor de refer\u00eancia; consulte a estimativa atual.';
+        } else if (prize?.amount) {
           const amount = prize.amount;
           footer.textContent = amount >= 1000000000 ? `R$ ${new Intl.NumberFormat('pt-BR',{maximumFractionDigits:2}).format(amount/1000000000)} Bilhão` : amount >= 1000000 ? `R$ ${new Intl.NumberFormat('pt-BR',{maximumFractionDigits:2}).format(amount/1000000)} ${amount === 1000000 ? 'Milhão' : 'Milhões'}` : button.dataset.poolGame === 'super' && amount >= 1000 ? `R$ ${new Intl.NumberFormat('pt-BR',{maximumFractionDigits:2}).format(amount/1000)} Mil` : `R$ ${new Intl.NumberFormat('pt-BR',{maximumFractionDigits:0}).format(amount)}`;
           footer.title = `Prêmio estimado do concurso ${prize.contest}; sujeito a alterações.`;
