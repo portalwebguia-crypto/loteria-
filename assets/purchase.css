@@ -89,11 +89,11 @@
   .pool-modalities-inner{width:calc(100% - 8px);padding:12px 0 24px}
   .pool-modalities h2{margin:14px 20px 8px;font-size:18px;line-height:1.25}
   .modality-carousel{gap:0;padding:0 4px}
-  .modality-arrow{width:26px;height:44px;padding:0;font-size:34px;line-height:1}
-  .modality-scroll{flex:0 1 300px;width:300px;max-width:calc(100% - 52px);gap:28px;padding:18px 4px 12px;overflow-x:auto}
-  .modality-chip{flex:0 0 132px;width:132px;height:97px;min-height:97px;padding:14px 4px 24px;border:1px solid #d2d2d2;border-radius:10px;font-size:13px;line-height:1.2}
+  .modality-arrow{width:20px;height:44px;padding:0;font-size:34px;line-height:1}
+  .modality-scroll{flex:1 1 0;width:auto;max-width:none;gap:12px;padding:18px 2px 12px;overflow-x:auto}
+  .modality-chip{flex:0 0 calc((100% - 12px)/2);width:auto;height:104px;min-height:104px;padding:14px 5px 25px;border:1px solid #d2d2d2;border-radius:10px;font-size:14px;line-height:1.2}
   .modality-chip .modality-clover{top:-18px;width:36px;height:36px;padding:3px;gap:1px}
-  .modality-chip .modality-count{height:22px;padding:2px;font-size:10px;line-height:1.1}
+  .modality-chip .modality-count{height:23px;padding:2px;font-size:11px;line-height:1.1}
   .modality-chip[data-pool-game=""].is-active{background:#faf7fb;color:#4f5c72;border-color:#d2d2d2}
   .modality-chip[data-pool-game=""].is-active .modality-count{display:none}
   .modality-chip[data-pool-game="virada"].is-active{background:#00a451;color:#fff;border-color:#00a451}
