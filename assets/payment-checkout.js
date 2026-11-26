@@ -6,6 +6,7 @@
 
   let live = false;
   let manualPix = false;
+  let requiresBuyerIdentity = false;
   const api = name => new URL(name === 'checkout-info' || live ? `api/${name}` : `api/blackcat-simulation?action=${name}`, location.href).toString();
   async function jsonResponse(response, fallback) {
     let result;
@@ -117,11 +118,12 @@
   function configureEnvironment(info) {
     live = info.environment === 'live' && info.simulation === false;
     manualPix = live && info.provider === 'direct-pix';
+    requiresBuyerIdentity = live && info.provider === 'blackcat';
     modal.querySelector('.payment-status').classList.toggle('payment-status--plain', manualPix);
     if (!live && (info.environment !== 'simulation' || info.simulation !== true)) throw new Error('Ambiente de pagamento inválido.');
     form.querySelector('.payment-consent').hidden = false;
     if (!live) { submit.querySelector('.payment-option-caption').textContent = 'Simular PIX'; return; }
-    modal.querySelectorAll('.payment-live-field').forEach(label => { label.hidden = manualPix; label.querySelector('input').required = !manualPix; });
+    modal.querySelectorAll('.payment-live-field').forEach(label => { label.hidden = !requiresBuyerIdentity; label.querySelector('input').required = requiresBuyerIdentity; });
     modal.querySelectorAll('.payment-kicker').forEach(node => { node.textContent = 'PAGAMENTO PIX'; });
     modal.querySelectorAll('.payment-disclaimer').forEach(node => {
       node.hidden = manualPix;
@@ -130,7 +132,9 @@
     const consent = form.querySelector('.payment-consent');
     consent.lastChild.textContent = manualPix
       ? 'Li e aceito os termos de pagamento e estou ciente de que meu bilhete será confirmado após a validação da compra.'
-      : 'Li os termos e a política de privacidade do operador e autorizo o envio dos dados necessários à BlackCat para processar este pagamento.';
+      : info.provider === 'shark-payments'
+        ? 'Autorizo o envio do meu nome e e-mail à Shark Payments para processar este pagamento.'
+        : 'Li os termos e a política de privacidade do operador e autorizo o envio dos dados necessários à BlackCat para processar este pagamento.';
     submit.querySelector('.payment-option-caption').textContent = 'Gerar PIX';
     modal.querySelector('.payment-pix-banner .payment-option-caption').textContent = 'Pagamento PIX';
     const headings = modal.querySelectorAll('.payment-qr-card h3');
@@ -192,11 +196,13 @@
       target.textContent = business.notice;
       return;
     }
-    const displayName = business.publicName === 'L7 PG' ? 'Loteria' : business.publicName;
+    const displayName = business.publicName === 'L7 PG' ? 'Loteria' : (business.publicName || 'Loja Online');
     const contactEmail = business.contactEmail === 'suporte@blackcatpagamentos.com.br' ? 'suporte@loteria.com' : business.contactEmail;
-    target.replaceChildren(document.createTextNode(
-      `${displayName} · ${business.legalName}${business.taxId ? ` (CNPJ ${business.taxId})` : ''}${business.address ? `, ${business.address}` : ''}.${contactEmail ? ` Contato: ${contactEmail}.` : ''} `,
-    ));
+    const details = [displayName];
+    if (business.legalName) details.push(business.legalName);
+    if (business.taxId) details.push(`CNPJ ${business.taxId}`);
+    if (business.address) details.push(business.address);
+    target.replaceChildren(document.createTextNode(`${details.join(' · ')}.${contactEmail ? ` Contato: ${contactEmail}.` : ''} `));
     for (const [label, url] of [['Privacidade', business.privacyUrl], ['Termos', business.termsUrl]]) {
       try {
         const policyUrl = new URL(url);
@@ -318,7 +324,7 @@
         credentials: 'same-origin',
         signal,
         body: JSON.stringify({
-          buyer: {name:form.elements.name.value.trim(), email:form.elements.email.value.trim(), ...(live && !manualPix ? {phone:form.elements.phone.value, cpf:form.elements.cpf.value} : {})},
+          buyer: {name:form.elements.name.value.trim(), email:form.elements.email.value.trim(), ...(live && requiresBuyerIdentity ? {phone:form.elements.phone.value, cpf:form.elements.cpf.value} : {})},
           items, ...(live ? {requestId, consent:form.elements.consent.checked} : {}),
         }),
       });

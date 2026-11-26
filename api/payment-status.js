@@ -5,5 +5,7 @@ module.exports = endpoint(async (req, res) => {
   requireMethod(req, res, 'GET');
   const token = new URL(req.url, 'https://api.invalid').searchParams.get('token');
   json(res, typeof token === 'string' && token.startsWith('DP.')
-    ? await require('../lib/direct-pix.js').paymentStatus(token) : await payments.paymentStatus(token));
+    ? await require('../lib/direct-pix.js').paymentStatus(token)
+    : process.env.SHARKPAY_API_KEY?.trim() && !token?.startsWith('SIM.') ? await require('../lib/shark-payments.js').paymentStatus(token)
+      : await payments.paymentStatus(token));
 });

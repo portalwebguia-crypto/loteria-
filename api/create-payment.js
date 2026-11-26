@@ -7,7 +7,9 @@ module.exports = endpoint(async (req, res) => {
   const input = await readJson(req);
   const direct = require('../lib/direct-pix.js');
   const directSettings = await direct.settings();
-  const result = directSettings?.enabled ? await direct.createPayment(input, directSettings) : await payments.createPayment(input);
+  const result = directSettings?.enabled ? await direct.createPayment(input, directSettings)
+    : process.env.SHARKPAY_API_KEY?.trim() ? await require('../lib/shark-payments.js').createPayment(input)
+      : await payments.createPayment(input);
   // A tracking outage must never turn a successfully created payment into an error.
   try { await require('../lib/visitors.js').recordPix(req, result, input.items); } catch (_) {}
   json(res, result, 201);
